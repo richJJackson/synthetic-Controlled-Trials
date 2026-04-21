@@ -2,6 +2,7 @@
 
 ###
 
+install.packages("rstan")
 library(ebal)
 library(survival)
 library(psc)
@@ -15,7 +16,7 @@ devtools::load_all()
 ######## CONTROL POPULATION ############
 ### Creating population of control and experimental patients
 
-N <- 50000
+N <- 5000
 
 gam_0 <- 0.05
 gam_1 <- log(0.6)
@@ -120,6 +121,9 @@ treated$cenc
 treated$tmc[which(treated$cenc == 0)] <- treated$centm[which(treated$cenc == 0)]
 treated$cenc <- as.numeric(!(6 < treated$tmc))
 treated$tmc <- pmin(6, treated$tmc)
+
+
+
 
 
 
@@ -653,6 +657,11 @@ model {
 }
 "
 
+
+##############################################################################
+##############################################################################
+##############################################################################
+##############################################################################
 
 ### Function for combinding estimates from psc and cm
 

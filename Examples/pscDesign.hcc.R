@@ -22,8 +22,8 @@ load("abCFM_prog.Rda")
 
 
 ### simulation paramteres (Once all scenarios complete can you increase these to 500, 2000, 400)
-nsim = 50
-nsim.psc = 500
+nsim = 200
+nsim.psc = 1000
 burn.psc = 200
 
 ### Setting 'delta'
@@ -60,6 +60,10 @@ rec6 <- recForcast(nSite,rpm6,openRate,Max.Time = maxTime)
 #######################################
 
 
+
+
+#############################
+
 #######################################
 ### single Arm design
 design_singArm1 <- pscDesign(abCFM_prog,beta=beta,n0=0,n1=40,fuTime=12,rec=rec1,nsim=nsim)
@@ -69,19 +73,94 @@ design_singArm4 <- pscDesign(abCFM_prog,beta=beta,n0=0,n1=75,fuTime=12,rec=rec4,
 design_singArm5 <- pscDesign(abCFM_prog,beta=beta,n0=0,n1=100,fuTime=12,rec=rec5,nsim=nsim)
 design_singArm6 <- pscDesign(abCFM_prog,beta=beta,n0=0,n1=150,fuTime=12,rec=rec6,nsim=nsim)
 
+#######################################
+### Randomised (1:1)
+design_randEq1 <- pscDesign(abCFM_prog,beta=beta,n0=20,n1=20,fuTime=12,rec=rec1,nsim=nsim)
+design_randEq2 <- pscDesign(abCFM_prog,beta=beta,n0=25,n1=25,fuTime=12,rec=rec2,nsim=nsim)
+design_randEq3 <- pscDesign(abCFM_prog,beta=beta,n0=32,n1=33,fuTime=12,rec=rec3,nsim=nsim)
+design_randEq4 <- pscDesign(abCFM_prog,beta=beta,n0=37,n1=38,fuTime=12,rec=rec4,nsim=nsim)
+design_randEq5 <- pscDesign(abCFM_prog,beta=beta,n0=50,n1=50,fuTime=12,rec=rec5,nsim=nsim)
+design_randEq6 <- pscDesign(abCFM_prog,beta=beta,n0=75,n1=150,fuTime=12,rec=rec6,nsim=nsim)
+
+### Randomised (1:2)
+design_randUneq1 <- pscDesign(abCFM_prog,beta=beta,n0=13,n1=27,fuTime=12,rec=rec1,nsim=nsim)
+design_randUneq2 <- pscDesign(abCFM_prog,beta=beta,n0=17,n1=33,fuTime=12,rec=rec2,nsim=nsim)
+design_randUneq3 <- pscDesign(abCFM_prog,beta=beta,n0=22,n1=43,fuTime=12,rec=rec3,nsim=nsim)
+design_randUneq4 <- pscDesign(abCFM_prog,beta=beta,n0=25,n1=50,fuTime=12,rec=rec4,nsim=nsim)
+design_randUneq5 <- pscDesign(abCFM_prog,beta=beta,n0=33,n1=67,fuTime=12,rec=rec5,nsim=nsim)
+design_randUneq6 <- pscDesign(abCFM_prog,beta=beta,n0=50,n1=100,fuTime=12,rec=rec6,nsim=nsim)
+
+### Randomised (1:3)
+design_rand3Uneq1 <- pscDesign(abCFM_prog,beta=beta,n0=10,n1=30,fuTime=12,rec=rec1,nsim=nsim)
+design_rand3Uneq2 <- pscDesign(abCFM_prog,beta=beta,n0=12,n1=38,fuTime=12,rec=rec2,nsim=nsim)
+design_rand3Uneq3 <- pscDesign(abCFM_prog,beta=beta,n0=16,n1=49,fuTime=12,rec=rec3,nsim=nsim)
+design_rand3Uneq4 <- pscDesign(abCFM_prog,beta=beta,n0=19,n1=56,fuTime=12,rec=rec4,nsim=nsim)
+design_rand3Uneq5 <- pscDesign(abCFM_prog,beta=beta,n0=25,n1=75,fuTime=12,rec=rec5,nsim=nsim)
+design_rand3Uneq6 <- pscDesign(abCFM_prog,beta=beta,n0=30,n1=120,fuTime=12,rec=rec6,nsim=nsim)
+
+
+
+
+
+
+
 #############################. Summarising results
 
-res <- cbind(design_singArm1[[2]][,2],design_singArm2[[2]][,2],design_singArm3[[2]][,2],
+res_sing <- cbind(design_singArm1[[2]][,2],design_singArm2[[2]][,2],design_singArm3[[2]][,2],
              design_singArm4[[2]][,2],design_singArm5[[2]][,2],design_singArm6[[2]][,2])
 
 
+res_randEq <- cbind(design_randEq1[[2]][,2],design_randEq2[[2]][,2],design_randEq3[[2]][,2],
+                  design_randEq4[[2]][,2],design_randEq5[[2]][,2],design_randEq6[[2]][,2])
+
+res_randUneq <- cbind(design_randUneq1[[2]][,2],design_randUneq2[[2]][,2],design_randUneq3[[2]][,2],
+                   design_randUneq4[[2]][,2],design_randUneq5[[2]][,2],design_randUneq6[[2]][,2])
+
+res_rand3Uneq <- cbind(design_rand3Uneq1[[2]][,2],design_rand3Uneq2[[2]][,2],design_rand3Uneq3[[2]][,2],
+                           design_rand3Uneq4[[2]][,2],design_rand3Uneq5[[2]][,2],design_rand3Uneq6[[2]][,2])
+
+design_rand3Uneq2
+res_rand3Uneq
+
+par(mfrow=c(1,3))
+
+plot(ss,res_sing[3,],typ="o",col=1,lwd=2,pch=15,ylim=c(0.3,1),xlim=c(40,150),main="alpha=0.05",
+     ylab="Sample Siz",xlab="Power")
+lines(ss,res_randEq[3,],typ="o",col=2,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+lines(ss,res_randUneq[3,],typ="o",col=3,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+lines(ss,res_rand3Uneq[3,],typ="o",col=4,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+abline(h=c(0.8,0.9),lty=3,col=6,lwd=2)
+
+
+plot(ss,res_sing[4,],typ="o",col=1,lwd=2,pch=15,ylim=c(0.3,1),xlim=c(40,150),main="alpha=0.1",
+     ylab="Sample Siz",xlab="Power")
+lines(ss,res_randEq[4,],typ="o",col=2,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+lines(ss,res_randUneq[4,],typ="o",col=3,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+lines(ss,res_rand3Uneq[4,],typ="o",col=4,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+abline(h=c(0.8,0.9),lty=3,col=6,lwd=2)
+
+
+plot(ss,res_sing[6,],typ="o",col=1,lwd=2,pch=15,ylim=c(0.3,1),xlim=c(40,150),main="alpha=0.2",
+     ylab="Sample Siz",xlab="Power")
+lines(ss,res_randEq[6,],typ="o",col=2,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+lines(ss,res_randUneq[6,],typ="o",col=3,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+lines(ss,res_rand3Uneq[6,],typ="o",col=4,lwd=2,pch=15,ylim=c(0.5,1),xlim=c(40,150))
+abline(h=c(0.8,0.9),lty=3,col=6,lwd=2)
+
+
+
+
+plot(ss,res_sing[4,],typ="0",col=1,lwd=2)
+
+design_singArm2
+
 ### To tabulate
-pwrEst(res[,1],ss)
-pwrEst(res[,2],ss)
-pwrEst(res[,3],ss)
-pwrEst(res[,4],ss)
-pwrEst(res[,5],ss)
-pwrEst(res[,6],ss)
+pwrEst(res_sing[1,],ss)
+pwrEst(res_sing[2,],ss)
+pwrEst(res_sing[3,],ss)
+pwrEst(res_sing[4,],ss)
+pwrEst(res_sing[5,],ss)
+pwrEst(res_sing[6,],ss)
 
 ss <- c(40,50,65,75,100,150)
 
@@ -97,36 +176,35 @@ legend(130,0.75,c("0.01","0.025","0.05","0.1","0.15","0.2"),col=c(1:6),lty=1,bty
 abline(h=c(0.8,0.85,0.9),lty=3)
 
 
-#############################
 
 
-### Randomised (1:1)
-design_randEq1 <- pscDesign(abCFM_prog,beta=beta,n0=20,n1=20,fuTime=12,rec=rec1,nsim=nsim)
-design_randEq2 <- pscDesign(abCFM_prog,beta=beta,n0=25,n1=25,fuTime=12,rec=rec2,nsim=nsim)
-design_randEq3 <- pscDesign(abCFM_prog,beta=beta,n0=32,n1=33,fuTime=12,rec=rec3,nsim=nsim)
-design_randEq4 <- pscDesign(abCFM_prog,beta=beta,n0=37,n1=38,fuTime=12,rec=rec4,nsim=nsim)
-design_randEq5 <- pscDesign(abCFM_prog,beta=beta,n0=50,n1=50,fuTime=12,rec=rec5,nsim=nsim)
-design_randEq6 <- pscDesign(abCFM_prog,beta=beta,n0=075,n1=150,fuTime=12,rec=rec6,nsim=nsim)
+##############################################################################
+##############################################################################
+##############################################################################
 
-### Randomised (1:2)
-design_randUneq1 <- pscDesign(abCFM_prog,beta=beta,n0=20,n1=20,fuTime=12,rec=rec1,nsim=nsim)
-design_randUneq2 <- pscDesign(abCFM_prog,beta=beta,n0=25,n1=25,fuTime=12,rec=rec2,nsim=nsim)
-design_randUneq3 <- pscDesign(abCFM_prog,beta=beta,n0=32,n1=33,fuTime=12,rec=rec3,nsim=nsim)
-design_randUneq4 <- pscDesign(abCFM_prog,beta=beta,n0=37,n1=38,fuTime=12,rec=rec4,nsim=nsim)
-design_randUneq5 <- pscDesign(abCFM_prog,beta=beta,n0=50,n1=50,fuTime=12,rec=rec5,nsim=nsim)
-design_randUneq6 <- pscDesign(abCFM_prog,beta=beta,n0=075,n1=150,fuTime=12,rec=rec6,nsim=nsim)
+
+##############################
+##############################
+############### Functions to be loaded first
+##############################
+##############################
 
 
 
-### Repeat with inflated variance
-abCFM_prog_iv <- abCFM_prog
-abm_sig <- abCFM_prog_iv$sig
-diag(abm_sig) <- diag(abm_sig)*2
-abCFM_prog_iv$sig <- abm_sig
+### Function estimate power for each alpha level
 
-### Repeat the 3 designs above with inflated variance
+pwrEst <- function(y,ss){
 
+  md <- lm(ss~y+I(y^2))
+  co <- coef(md)
 
+  pw80 <- co[1]+co[2]*0.8+co[3]*0.8^2
+  pw85 <- co[1]+co[2]*0.85+co[3]*0.85^2
+  pw90 <- co[1]+co[2]*0.9+co[3]*0.9^2
+
+  c(pw80,pw85,pw90)
+
+}
 
 
 CFM <- abCFM_prog
@@ -159,8 +237,6 @@ pscDesign <- function(CFM,n0=0,n1,beta,fuTime,recTime,rec=NULL,
     n <- max(rec$Cumualtive.Rec.)
   }
 
-
-  n
   ### Simulate Trials
   trialSim <- lapply(c(1:nsim),function(x){
     trialSamp(CFM=CFM,n0=n0,n1=n1,beta=beta,fuTime=fuTime,
@@ -176,6 +252,7 @@ pscDesign <- function(CFM,n0=0,n1,beta,fuTime,recTime,rec=NULL,
   }
   )
 
+
   ## Evaluate bound against alpha level
   trialAlp <- lapply(trialEval,function(x) as.numeric(x<alpha_eval))
   pwrEst <- colSums(Reduce(rbind,trialAlp))/nsim
@@ -189,16 +266,7 @@ pscDesign <- function(CFM,n0=0,n1,beta,fuTime,recTime,rec=NULL,
   ### Returning object
   ret <- list(trialSumm,estimate)
   return(ret)
-
 }
-
-
-
-abCFM_prog
-
-
-
-
 
 
 
@@ -220,10 +288,6 @@ pwrEst <- function(y,ss){
 
 
 ##############################################################################
-##############################################################################
-##############################################################################
-##############################################################################
-
 ### Function for combinding estimates from psc and cm
 
 pscComb <- function(x) {
@@ -253,16 +317,6 @@ pscComb <- function(x) {
 
 #######################################
 
-
-CFM,ds,nsim=nsim.psc,burn=burn.psc,trt=ds$arm)
-
-DC <- ds
-nsim <- 2000
-id <- NULL
-trt <- ds$arm
-nchain=1
-thin <- 2
-burn <- 500
 
 pscfit <- function(
     CFM,
@@ -431,7 +485,7 @@ trialSamp <- function(CFM,n0,n1,beta,fuTime,recTime,rec,
     #### simfit2
 
     simfit <- pscfit(CFM,ds,nsim=nsim.psc,burn=burn.psc,trt=ds$arm,nchain=1)
-    combRes <- pscComb(simfit2)
+    combRes <- pscComb(simfit)
     ret <- data.frame(sum(ds$cen),combRes[1],combRes[2])
     names(ret) <- c("ne","post_mn","post_sd")
     ret
@@ -440,7 +494,6 @@ trialSamp <- function(CFM,n0,n1,beta,fuTime,recTime,rec,
 
   ret
 }
-
 
 
 
