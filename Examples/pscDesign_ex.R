@@ -134,7 +134,7 @@ treated$tmc <- pmin(6, treated$tmc)
 ####################################################################################
 ####################################################################################
 
-nsim <- 50
+nsim <- 1000
 
 res.array <- array(NA, dim = c(9, 2, nsim))
 res.array
@@ -145,8 +145,8 @@ ns <- 1
 for (ns in 1:nsim) {
 
     ####
-  Ncont <- 5000
-  Ntrt <- 3000
+  Ncont <- 500
+  Ntrt <- 100
 
   ### Sample
   contDat <- cont[sample(1:nrow(cont), Ncont, replace = F), ]
@@ -179,10 +179,6 @@ for (ns in 1:nsim) {
   cm <- coxph(s.ob ~ trt, data = combDat)
   cm_adj <- coxph(s.ob ~ X_1 + X_2 + X_3 + X_4 + X_5 + trt, data = combDat)
   cm_padj <- coxph(s.ob ~ X_1 + X_3 + trt, data = combDat)
-
-  cm
-  cm_adj
-  cm_padj
 
   us <- survreg(s.ob ~ trt, data = combDat, dist = "exponential")
 
@@ -228,6 +224,7 @@ for (ns in 1:nsim) {
 
   sc_cm <- coxph(s.ob ~ trt, data = combDat, weights = combDat$w)
   sc_pcm <- coxph(s.ob ~ trt, data = combDat, weights = combDat$pw)
+
 
   ####################################
   ### Bayesian Historical Controls
@@ -293,9 +290,30 @@ for (ns in 1:nsim) {
   r9 <- summary(singArm_caseW_baye)$summary[2, c(1, 3)]
 
   tmp.res <- rbind(r1, r2, r3, r4, r5, r6, r7, r8, r9)
-  tmp.res
   res.array[,, ns] <- tmp.res
+  res.array
+  plot(rep(c(1:9),nsim),c(res.array[,1,]),ylim=c(-2,2),pch=20,col=c(1:9),main=ns,
+       xlab="log(HR)",ylab="scenario")
+
 }
+
+
+
+
+
+dim(res.array)
+
+
+plot(rep(c(1:9),50),c(res.array[,1,]),ylim=c(-2,2),pch=20,col=c(1:9),main=ns,
+     xlab="log(HR)",ylab="scenario")
+abline(h=log(0.7))
+
+log(0.7)
+rowMeans(res.array[,1,],na.rm=T)
+
+
+
+res.array[,1]
 
 
 
@@ -310,7 +328,7 @@ for (ns in 1:nsim) {
 ##### Hybrid Trial (1:1) randomisation
 
 ####
-Ncont <- 250
+Ncont <- 500
 Ntrt <- 100
 
 

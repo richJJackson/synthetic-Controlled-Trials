@@ -70,59 +70,71 @@ setwd("SimRes")
 #######################################
 ### single Arm design
 design_singArm1 <- pscDesign(abCFM_prog,beta=log(0.725),n0=0,n1=40,fuTime=12,rec=rec1,nsim=nsim,cen.prop=0.5)
-save(design_singArm1,file="design_singArm1.R")
+save(design_singArm1,file="design_singArm1.2.R")
 design_singArm2 <- pscDesign(abCFM_prog,beta=log(0.725),n0=0,n1=50,fuTime=12,rec=rec2,nsim=nsim,cen.prop=0.5)
-save(design_singArm2,file="design_singArm2.R")
+save(design_singArm2,file="design_singArm2.2.R")
 design_singArm3 <- pscDesign(abCFM_prog,beta=log(0.725),n0=0,n1=65,fuTime=12,rec=rec3,nsim=nsim,cen.prop=0.5)
-save(design_singArm3,file="design_singArm3.R")
+save(design_singArm3,file="design_singArm3.2.R")
 design_singArm4 <- pscDesign(abCFM_prog,beta=log(0.725),n0=0,n1=75,fuTime=12,rec=rec4,nsim=nsim,cen.prop=0.5)
-save(design_singArm4,file="design_singArm4.R")
+save(design_singArm4,file="design_singArm4.2.R")
 design_singArm5 <- pscDesign(abCFM_prog,beta=log(0.725),n0=0,n1=100,fuTime=12,rec=rec5,nsim=nsim,cen.prop=0.5)
-save(design_singArm5,file="design_singArm5.R")
+save(design_singArm5,file="design_singArm5.2.R")
 design_singArm6 <- pscDesign(abCFM_prog,beta=log(0.725),n0=0,n1=150,fuTime=12,rec=rec6,nsim=nsim,cen.prop=0.5)
-save(design_singArm6,file="design_singArm6.R")
+save(design_singArm6,file="design_singArm6.2.R")
 
 #######################################
 ### Randomised (1:1)
 design_randEq1 <- pscDesign(abCFM_prog,beta=log(0.725),n0=20,n1=20,fuTime=12,rec=rec1,nsim=nsim,cen.prop=0.5)
-save(design_randEq1,file="design_randEq1.R")
+save(design_randEq1,file="design_randEq1.2.R")
 design_randEq2 <- pscDesign(abCFM_prog,beta=log(0.725),n0=25,n1=25,fuTime=12,rec=rec2,nsim=nsim,cen.prop=0.5)
-save(design_randEq2,file="design_randEq2.R")
+save(design_randEq2,file="design_randEq2.2.R")
 design_randEq3 <- pscDesign(abCFM_prog,beta=log(0.725),n0=32,n1=33,fuTime=12,rec=rec3,nsim=nsim,cen.prop=0.5)
-save(design_randEq3,file="design_randEq3.R")
+save(design_randEq3,file="design_randEq3.2.R")
 design_randEq4 <- pscDesign(abCFM_prog,beta=log(0.725),n0=37,n1=38,fuTime=12,rec=rec4,nsim=nsim,cen.prop=0.5)
-save(design_randEq4,file="design_randEq4.R")
+save(design_randEq4,file="design_randEq4.2.R")
 design_randEq5 <- pscDesign(abCFM_prog,beta=log(0.725),n0=50,n1=50,fuTime=12,rec=rec5,nsim=nsim,cen.prop=0.5)
-save(design_randEq5,file="design_randEq5.R")
+save(design_randEq5,file="design_randEq5.2.R")
 design_randEq6 <- pscDesign(abCFM_prog,beta=log(0.725),n0=75,n1=75,fuTime=12,rec=rec6,nsim=nsim,cen.prop=0.5)
-save(design_randEq6,file="design_randEq6.R")
+save(design_randEq6,file="design_randEq6.2.R")
 
 
 ### Randomised (1:2)
-design_randUneq1 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=13,n1=27,fuTime=12,rec=rec1,nsim=nsim,cen.prop=0.5)
-save(design_randUneq1,file="design_randUneq1.R")
-design_randUneq2 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=17,n1=33,fuTime=12,rec=rec2,nsim=nsim,cen.prop=0.5)
-save(design_randUneq2,file="design_randUneq2.R")
-design_randUneq3 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=22,n1=43,fuTime=12,rec=rec3,nsim=nsim,cen.prop=0.5)
-save(design_randUneq3,file="design_randUneq3.R")
-design_randUneq4 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=25,n1=50,fuTime=12,rec=rec4,nsim=nsim,cen.prop=0.5)
-save(design_randUneq4,file="design_randUneq4.R")
-design_randUneq5 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=33,n1=67,fuTime=12,rec=rec5,nsim=nsim,cen.prop=0.5)
-save(design_randUneq5,file="design_randUneq5.R")
-design_randUneq6 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=50,n1=100,fuTime=12,rec=rec6,nsim=nsim,cen.prop=0.5)
-save(design_randUneq6,file="design_randUneq6.R")
+design_randUneq1 <- pscDesign(abCFM_prog,beta=log(0.725),n0=13,n1=27,fuTime=12,rec=rec1,nsim=nsim,cen.prop=0.5)
+save(design_randUneq1,file="design_randUneq1.2.R")
+design_randUneq2 <- pscDesign(abCFM_prog,beta=log(0.725),n0=17,n1=33,fuTime=12,rec=rec2,nsim=nsim,cen.prop=0.5)
+save(design_randUneq2,file="design_randUneq2.2.R")
+design_randUneq3 <- pscDesign(abCFM_prog,beta=log(0.725),n0=22,n1=43,fuTime=12,rec=rec3,nsim=nsim,cen.prop=0.5)
+save(design_randUneq3,file="design_randUneq3.2.R")
+design_randUneq4 <- pscDesign(abCFM_prog,beta=log(0.725),n0=25,n1=50,fuTime=12,rec=rec4,nsim=nsim,cen.prop=0.5)
+save(design_randUneq4,file="design_randUneq4.2.R")
+design_randUneq5 <- pscDesign(abCFM_prog,beta=log(0.725),n0=33,n1=67,fuTime=12,rec=rec5,nsim=nsim,cen.prop=0.5)
+save(design_randUneq5,file="design_randUneq5.2.R")
+design_randUneq6 <- pscDesign(abCFM_prog,beta=log(0.725),n0=50,n1=100,fuTime=12,rec=rec6,nsim=nsim,cen.prop=0.5)
+save(design_randUneq6,file="design_randUneq6.2.R")
 
 ### Randomised (1:3)
-design_rand3Uneq1 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=10,n1=30,fuTime=12,rec=rec1,nsim=nsim,cen.prop=0.5)
-design_rand3Uneq2 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=12,n1=38,fuTime=12,rec=rec2,nsim=nsim,cen.prop=0.5)
-design_rand3Uneq3 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=16,n1=49,fuTime=12,rec=rec3,nsim=nsim,cen.prop=0.5)
-design_rand3Uneq4 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=19,n1=56,fuTime=12,rec=rec4,nsim=nsim,cen.prop=0.5)
-design_rand3Uneq5 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=25,n1=75,fuTime=12,rec=rec5,nsim=nsim,cen.prop=0.5)
-design_rand3Uneq6 <- pscDesign(abCFM_prog_ex,beta=log(0.725),n0=30,n1=120,fuTime=12,rec=rec6,nsim=nsim,cen.prop=0.5)
+design_rand3Uneq1 <- pscDesign(abCFM_prog,beta=log(0.725),n0=10,n1=30,fuTime=12,rec=rec1,nsim=nsim,cen.prop=0.5)
+save(design_rand3Uneq1,file="design_rand3Uneq1.2.R")
+design_rand3Uneq2 <- pscDesign(abCFM_prog,beta=log(0.725),n0=12,n1=38,fuTime=12,rec=rec2,nsim=nsim,cen.prop=0.5)
+save(design_rand3Uneq2,file="design_rand3Uneq2.2.R")
+design_rand3Uneq3 <- pscDesign(abCFM_prog,beta=log(0.725),n0=16,n1=49,fuTime=12,rec=rec3,nsim=nsim,cen.prop=0.5)
+save(design_rand3Uneq3,file="design_rand3Uneq3.2.R")
+design_rand3Uneq4 <- pscDesign(abCFM_prog,beta=log(0.725),n0=19,n1=56,fuTime=12,rec=rec4,nsim=nsim,cen.prop=0.5)
+save(design_rand3Uneq4,file="design_rand3Uneq4.2.R")
+design_rand3Uneq5 <- pscDesign(abCFM_prog,beta=log(0.725),n0=25,n1=75,fuTime=12,rec=rec5,nsim=nsim,cen.prop=0.5)
+save(design_rand3Uneq5,file="design_rand3Uneq5.2.R")
+design_rand3Uneq6 <- pscDesign(abCFM_prog,beta=log(0.725),n0=30,n1=120,fuTime=12,rec=rec6,nsim=nsim,cen.prop=0.5)
+save(design_rand3Uneq6,file="design_rand3Uneq6.2.R")
 
-
+getwd()
 
 #############################. Summarising results. (TABLE)
+
+
+design_singArm5
+
+
+setwd("/Users/richardjackson/Documents/GitHub/synthetic-Controlled-Trials/Examples/Data/SimRes")
 
 pwEst <- function(ds,a){
   tb <- table(ds$'P>0'>a)
@@ -131,8 +143,10 @@ pwEst <- function(ds,a){
 }
 
 
-alp <- c(0.05,0.1,0.2)
+### reading in
+for(i in dir()) load(i)
 
+alp <- c(0.05,0.1,0.2)
 
 sa_des <- list(design_singArm1,design_singArm2,design_singArm3,
                design_singArm4,design_singArm5,design_singArm6)
@@ -143,29 +157,42 @@ ura_des <- list(design_randUneq1,design_randUneq2,design_randUneq3,
 ura3_des <- list(design_rand3Uneq1,design_rand3Uneq2,design_rand3Uneq3,
                design_rand3Uneq4,design_rand3Uneq5,design_rand3Uneq6)
 
-design_randEq1
-sa_pow <- lapply(sa_des,function(y) lapply(alp,function(x) pwEst(y,x)))
+sa_pow <- lapply(sa_des,function(y) lapply(alp,function(x) pwEst(y,x)));sa_pow
 ra_pow <- lapply(ra_des,function(y) lapply(alp,function(x) pwEst(y,x)))
 ura_pow <- lapply(ura_des,function(y) lapply(alp,function(x) pwEst(y,x)))
 ura3_pow <- lapply(ura3_des,function(y) lapply(alp,function(x) pwEst(y,x)))
 
-
 pw <- rep(c(0.05,0.1,0.2),6)
 ss <- c(40,50,65,75,100,150)[gl(6,3)]
-ss
-design
 
-design_singArm6
 
-pwr_res
+sa_pow[[5]]
+ra_pow[[5]]
+ura_pow[[5]]
+ura3_pow[[5]]
+
+
+exp(mean(design_rand3Uneq5$mean))
+mean(design_rand3Uneq5$mean)
+mean(design_rand3Uneq5$sd)
+
+mean(design_randUneq5$mean)
+mean(design_randUneq5$sd)
+
+mean(design_randEq5$mean)
+mean(design_randEq5$sd)
+
+
 
 pwr_res <- data.frame(pw,ss,"sa"=unlist(sa_pow),"ra"=unlist(ra_pow),"ura"=unlist(ura_pow),"ura3"=unlist(ura3_pow))
 
 library(tidyr)
 pwr_lng <- pivot_longer(pwr_res,cols=3:6)
 
-ggplot(pwr_lng,aes(x=ss,y=value,group=name))+
-  geom_line()+
+factor(pwr_lng$name)
+
+ggplot(pwr_lng,aes(x=ss,y=value,group=name,color=name))+
+  geom_line(linewidth=1.3)+
   facet_wrap(~pw)
 
 
