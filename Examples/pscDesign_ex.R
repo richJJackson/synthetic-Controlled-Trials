@@ -134,19 +134,17 @@ treated$tmc <- pmin(6, treated$tmc)
 ####################################################################################
 ####################################################################################
 
-nsim <- 1000
+nsim <- 500
 
 res.array <- array(NA, dim = c(9, 2, nsim))
 res.array
 
-
+####
+Ncont <- 300
+Ntrt <- 50
 ns <- 1
 
-for (ns in 1:nsim) {
-
-    ####
-  Ncont <- 500
-  Ntrt <- 100
+for (ns in 238:nsim) {
 
   ### Sample
   contDat <- cont[sample(1:nrow(cont), Ncont, replace = F), ]
@@ -164,8 +162,6 @@ for (ns in 1:nsim) {
 
   ### Creating combined dataset
   combDat <- rbind(contDat, trtDat)
-
-  combDat[1:3,]
 
   #####
   contDat$s.ob <- Surv(contDat$time, contDat$status)
@@ -211,7 +207,8 @@ for (ns in 1:nsim) {
   ### Synthetic Controls
   #################
 
-  X <- as.matrix(combDat[, c("X_1", "X_2", "X_3", "X_4", "X_5")])
+  X <- as.matrix(combDat[, c("X_1", "X_2", "X_3", "X_4")])
+  rm(eb)
   eb <- ebalance(Treatment = combDat$trt, X = X)
 
   combDat$w <- 1
@@ -299,21 +296,13 @@ for (ns in 1:nsim) {
 
 
 
+setwd("~/Documents/GitHub/synthetic-Controlled-Trials/Examples/Data/SimRes_td")
 
-
-dim(res.array)
-
-
-plot(rep(c(1:9),50),c(res.array[,1,]),ylim=c(-2,2),pch=20,col=c(1:9),main=ns,
-     xlab="log(HR)",ylab="scenario")
-abline(h=log(0.7))
-
-log(0.7)
-rowMeans(res.array[,1,],na.rm=T)
+fn <- paste("res.array_sa_c",Ncont,"_e",Ntrt,".R",sep="")
+save(res.array,file=fn)
 
 
 
-res.array[,1]
 
 
 
@@ -328,9 +317,12 @@ res.array[,1]
 ##### Hybrid Trial (1:1) randomisation
 
 ####
-Ncont <- 500
-Ntrt <- 100
+nsim <- 500
+rand.res.array <- array(NA, dim = c(13, 2, nsim))
 
+
+
+for (ns in 2:nsim) {
 
 ### Sample
 contDat <- cont[sample(1:nrow(cont), Ncont, replace = F), ]
@@ -363,10 +355,10 @@ combDat$s.ob <- Surv(combDat$time, combDat$cen)
 cm.rand <- coxph(s.ob ~ trt, data = trtDat)
 cm.rand.ad <- coxph(s.ob ~ X_1 + X_3 + trt, data = trtDat)
 
-trtDat[1:3, ]
 
 #### Pooled Analysis
 cm.pooled <- coxph(s.ob ~ trt, data = combDat)
+cm.pooled.ad <- coxph(s.ob ~ X_1 + X_3 + trt, data = combDat)
 
 
 ######################################
@@ -386,12 +378,8 @@ psc_full <- pscfit(cfm, trtDat, nchain = 1, trt = trtDat$trt, nsim = 10000)
 psc_part <- pscfit(pcfm, trtDat, nchain = 1, trt = trtDat$trt, nsim = 10000)
 
 
-cm.rand.ad
-
-psc_full
-
-pscComb(psc_full)
-pscComb(psc_part)
+psc_fullc <- pscComb(psc_full)
+psc_partc <- pscComb(psc_part)
 
 
 ######################################
@@ -403,11 +391,14 @@ pscComb(psc_part)
 contCont <- combDat[which(combDat$trt == 0 & combDat$source == "cont"), ]
 synthDat <- combDat[-which(combDat$trt == 0 & combDat$source == "cont"), ]
 
+
 X <- as.matrix(synthDat[, c("X_1", "X_2", "X_3", "X_4", "X_5")])
 eb <- ebalance(Treatment = synthDat$trt, X = X)
 
 pX <- as.matrix(synthDat[, c("X_1", "X_3")])
 peb <- ebalance(Treatment = synthDat$trt, X = pX)
+
+### Organising weights (and partial weights)
 
 synthDat$w <- 1
 synthDat$w[synthDat$trt == 0] <- eb$w
@@ -422,10 +413,6 @@ scData$s.ob <- Surv(scData$time, scData$cen)
 sc_cm <- coxph(s.ob ~ trt, data = scData, weights = scData$w)
 sc_pcm <- coxph(s.ob ~ trt, data = scData, weights = scData$pw)
 
-
-#plot(psc_full)
-#plot(psc_part)
-
 #### Commensurate Prior
 #### Bayesian Analysis
 
@@ -434,30 +421,16 @@ co <- as.numeric(sr$coefficients)
 se <- as.numeric(sqrt(sr$var))
 
 
+### Vague uninfomrative priors
+x <- as.numeric(trtDat$trt)-1;x
+
 vague_data <- list(
   N = nrow(trtDat),
   time = trtDat$time,
   status = trtDat$cen,
-  x = trtDat$trt,
+  x = x,
   lam0_mn = 0,
   lam0_t = 10
-)
-
-stan_data <- list(
-  N = nrow(trtDat),
-  time = trtDat$time,
-  status = trtDat$cen,
-  x = trtDat$trt,
-  lam0_mn = co,
-  lam0_t = se
-)
-
-stan_comm_data <- list(
-  N = nrow(trtDat),
-  time = trtDat$time,
-  status = trtDat$cen,
-  x = trtDat$trt,
-  lam0_mn = co
 )
 
 
@@ -470,6 +443,18 @@ vague_baye <- stan(
   refresh = 0
 )
 
+#### Informative (unadjusted) priors
+
+stan_data <- list(
+  N = nrow(trtDat),
+  time = trtDat$time,
+  status = trtDat$cen,
+  x = x,
+  lam0_mn = co,
+  lam0_t = se
+)
+
+
 hybrid_baye <- stan(
   model_code = exp_code,
   data = stan_data,
@@ -478,6 +463,18 @@ hybrid_baye <- stan(
   seed = 21319,
   refresh = 0
 )
+
+
+##### Commensurate Priors
+
+stan_comm_data <- list(
+  N = nrow(trtDat),
+  time = trtDat$time,
+  status = trtDat$cen,
+  x = x,
+  lam0_mn = co
+)
+
 
 hybrid_cp_baye <- stan(
   model_code = exp_comm_code,
@@ -489,15 +486,21 @@ hybrid_cp_baye <- stan(
 )
 
 
+### Case Weighted
+
+CW_Data <- synthDat[which(synthDat$source=="hist"),]
+cw_w <- CW_Data$w
+
+
 stan_cw_data <- list(
   N = nrow(trtDat),
   time = trtDat$time,
   status = trtDat$cen,
-  x = trtDat$trt,
-  N0 = nrow(contDat),
-  timec = contDat$time,
-  statusc = contDat$cen,
-  a0 = cp_w
+  x = x,
+  N0 = nrow(CW_Data),
+  timec = CW_Data$time,
+  statusc = CW_Data$cen,
+  a0 = cw_w
 )
 
 
@@ -511,31 +514,78 @@ hybrid_caseW_baye <- stan(
 )
 
 
-cm.rand
-sc_cm
-sc_pcm
-
-pscComb(psc_full)
-pscComb(psc_part)
-
-
-hybrid_cp_baye
-
-exp_caseW_code
-
-
-cm.pooled
-cm.rand
-sc_cm
-vague_baye
-co
-hybrid_baye
-co
-hybrid_cp_baye
-hybrid_caseW_baye
+### Partial Case Weighted
+cw_pw <- CW_Data$pw
+stan_cw_data <- list(
+  N = nrow(trtDat),
+  time = trtDat$time,
+  status = trtDat$cen,
+  x = x,
+  N0 = nrow(contDat),
+  timec = contDat$time,
+  statusc = contDat$cen,
+  a0 = cw_pw
+)
 
 
-cp_w <- synthDat$w[synthDat$trt == 0]
+hybrid_pcaseW_baye <- stan(
+  model_code = exp_caseW_code,
+  data = stan_cw_data,
+  iter = 2000,
+  chains = 2,
+  seed = 21319,
+  refresh = 0
+)
+
+
+
+
+#### Standard Randomised Comparison
+cm.rand <- coxph(s.ob ~ trt, data = trtDat)
+cm.rand.ad <- coxph(s.ob ~ X_1 + X_3 + trt, data = trtDat)
+
+
+#### Pooled Analysis
+cm.pooled <- coxph(s.ob ~ trt, data = combDat)
+cm.pooled.ad <- coxph(s.ob ~ X_1 + X_3 + trt, data = combDat)
+
+
+
+
+### Collecting Results
+r1 <- summary(cm.rand)$coef[1, c(1, 3)]
+r2 <- summary(cm.rand.ad)$coef[3, c(1, 3)]
+
+r3 <- summary(cm.pooled)$coef[1, c(1, 3)]
+r4 <- summary(cm.pooled.ad)$coef[3, c(1, 3)]
+
+r5 <- c(median(psc_fullc),sd(psc_fullc))
+r6 <- c(median(psc_partc),sd(psc_partc))
+
+r7 <- summary(sc_cm)$coef[1, c(1, 3)]
+r8 <- summary(sc_pcm)$coef[1, c(1, 3)]
+
+
+r11 <- summary(vague_baye)$summary[2, c(1, 3)]
+r12 <- summary(hybrid_baye)$summary[2, c(1, 3)]
+r13 <- summary(hybrid_cp_baye)$summary[2, c(1, 3)]
+r14 <- summary(hybrid_caseW_baye)$summary[2, c(1, 3)]
+r15 <- summary(hybrid_pcaseW_baye)$summary[2, c(1, 3)]
+
+
+tmp.res <- rbind(r1,r2,r3,r4,r5,r6,r7,r8,r11,r12,r13,r14,r15)
+rand.res.array[,, ns] <- tmp.res
+
+plot(rep(c(1:13),nsim),c(rand.res.array[,1,]),ylim=c(-2,2),pch=20,col=c(1:15),main=ns,
+     xlab="log(HR)",ylab="scenario")
+
+
+}
+
+
+
+fn <- paste("res.array_ra_c",Ncont,"_e",Ntrt,".R",sep="")
+save(rand.res.array,file=fn)
 
 
 ################################################################################################
