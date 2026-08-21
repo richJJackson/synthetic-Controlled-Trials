@@ -1,0 +1,19 @@
+Scenario,Design,Covariate overlap,Sample-size setting,Historical controls (n),Experimental arm (n),Concurrent controls (n),Total (n)
+1,Fully synthetic (single-arm),None,Small,300,50,0,350
+2,Fully synthetic (single-arm),None,Medium,400,75,0,475
+3,Fully synthetic (single-arm),None,Large,500,100,0,600
+4,Fully synthetic (single-arm),Moderate,Small,300,50,0,350
+5,Fully synthetic (single-arm),Moderate,Medium,400,75,0,475
+6,Fully synthetic (single-arm),Moderate,Large,500,100,0,600
+7,Fully synthetic (single-arm),Large,Small,300,50,0,350
+8,Fully synthetic (single-arm),Large,Medium,400,75,0,475
+9,Fully synthetic (single-arm),Large,Large,500,100,0,600
+10,Partially synthetic (hybrid),None,Small,300,25,25,350
+11,Partially synthetic (hybrid),None,Medium,400,38,37,475
+12,Partially synthetic (hybrid),None,Large,500,50,50,600
+13,Partially synthetic (hybrid),Moderate,Small,300,25,25,350
+14,Partially synthetic (hybrid),Moderate,Medium,400,38,37,475
+15,Partially synthetic (hybrid),Moderate,Large,500,50,50,600
+16,Partially synthetic (hybrid),Large,Small,300,25,25,350
+17,Partially synthetic (hybrid),Large,Medium,400,38,37,475
+18,Partially synthetic (hybrid),Large,Large,500,50,50,600

@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+Examples/psc_sim/stan_cache/*
+!Examples/psc_sim/stan_cache/.gitkeep
