@@ -1,0 +1,63 @@
+section,parameter,dataset,value,notes
+Master sample,N per dataset,All,50000,Super-population size
+Master sample,Seed,All,2026,RNG seed for generate_master.R
+Covariates,X_1 X_2 X_3,All,Continuous,Standard deviation 1 within each dataset
+Covariates,X_4 X_5 X_6,All,"Categorical, levels 1 2 3",Cut from latent normal variables at the dataset-specific cumulative probabilities
+Dependence,Latent correlation X_1 X_2,All,0.55,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_1 X_3,All,0.40,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_1 X_4,All,0.70,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_1 X_5,All,0.60,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_1 X_6,All,0.50,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_2 X_3,All,0.65,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_2 X_4,All,0.45,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_2 X_5,All,0.70,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_2 X_6,All,0.55,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_3 X_4,All,0.50,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_3 X_5,All,0.45,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_3 X_6,All,0.70,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_4 X_5,All,0.60,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_4 X_6,All,0.55,Gaussian copula correlation before categorisation
+Dependence,Latent correlation X_5 X_6,All,0.50,Gaussian copula correlation before categorisation
+Dependence,Observed pairwise correlation,All,0.37 to 0.65,Pearson correlation after X_4-X_6 are cut into three levels
+Margins,Mean X_1 X_2 X_3,Dataset 1,"0, 0, 0",Reference population
+Margins,P(X_4 = 1 2 3),Dataset 1,"0.55, 0.30, 0.15",Reference population
+Margins,P(X_5 = 1 2 3),Dataset 1,"0.50, 0.35, 0.15",Reference population
+Margins,P(X_6 = 1 2 3),Dataset 1,"0.45, 0.35, 0.20",Reference population
+Margins,Mean X_1 X_2 X_3,Dataset 2,"1.25, 1.05, 0.90",Moderate overlap with dataset 1
+Margins,P(X_4 = 1 2 3),Dataset 2,"0.35, 0.40, 0.25",Moderate overlap with dataset 1
+Margins,P(X_5 = 1 2 3),Dataset 2,"0.30, 0.40, 0.30",Moderate overlap with dataset 1
+Margins,P(X_6 = 1 2 3),Dataset 2,"0.30, 0.40, 0.30",Moderate overlap with dataset 1
+Margins,Mean X_1 X_2 X_3,Dataset 3,"2.80, 2.40, 2.10",Poor overlap with dataset 1
+Margins,P(X_4 = 1 2 3),Dataset 3,"0.10, 0.25, 0.65",Poor overlap with dataset 1
+Margins,P(X_5 = 1 2 3),Dataset 3,"0.10, 0.30, 0.60",Poor overlap with dataset 1
+Margins,P(X_6 = 1 2 3),Dataset 3,"0.15, 0.25, 0.60",Poor overlap with dataset 1
+Outcome,Baseline log cumulative hazard,All,-2.286,Spline intercept at reference covariates; reference median is 3.2 years
+Outcome,Log hazard coefficient X_1,All,0.12,Same in every dataset
+Outcome,Log hazard coefficient X_2,All,-0.08,Same in every dataset
+Outcome,Log hazard coefficient X_3,All,0.10,Same in every dataset
+Outcome,Log hazard X_4 level 2 vs 1,All,0.10,Same in every dataset
+Outcome,Log hazard X_4 level 3 vs 1,All,0.25,Same in every dataset
+Outcome,Log hazard X_5 level 2 vs 1,All,0.08,Same in every dataset
+Outcome,Log hazard X_5 level 3 vs 1,All,0.20,Same in every dataset
+Outcome,Log hazard X_6 level 2 vs 1,All,0.12,Same in every dataset
+Outcome,Log hazard X_6 level 3 vs 1,All,0.28,Same in every dataset
+Outcome,Treatment log hazard ratio,All,log(0.70),Constant conditional log hazard ratio
+Outcome,Distribution,All,Royston-Parmar spline with 1 internal knot,Proportional hazards on the cumulative-hazard scale
+Outcome,Spline knots on log time,All,"log(0.15), log(1.5), log(8)",Boundary knots and one internal knot
+Outcome,Spline log-time coefficient,All,1.15,Coefficient of log(t) in log cumulative hazard
+Outcome,Spline knot coefficient,All,-0.05,Bends log cumulative hazard away from a Weibull line
+Outcome,Censoring hazard,All,0.02,Independent exponential censoring time
+Outcome,Administrative censoring,All,6 years,Observation stopped at 6 years
+Exchangeability,Conditional on X_1 to X_6,All,Holds,Control log hazard coefficients do not depend on dataset
+Exchangeability,Unmeasured confounders,All,None,Removed from this design
+Prototype,Design,Single arm,400 replicates,Historical controls from dataset 1; trial sample from dataset 1 2 or 3
+Prototype,Historical controls,Single arm,400,Sampled without replacement from dataset 1
+Prototype,Trial patients,Single arm,75,All receive the experimental treatment
+Prototype,Replicate seeds,Single arm,"11, 12, 13 then plus 1000 per replicate",Replicate 1 uses seeds 11 12 and 13
+Prototype,Estimand shown,Single arm,log(0.70),Conditional log hazard ratio
+Prototype,PSC training fraction,Single arm,0.75,Share of historical controls used to fit the validation model
+Prototype,PSC internal knots,Single arm,1,Royston-Parmar counterfactual model on the historical controls
+Prototype,PSC validation fraction,Single arm,0.25,Held out and compared with the training model by pscfit
+Prototype,PSC calibration,Single arm,Posterior median hazard ratio,pscfit of the validation sample against the training model; 1 means the holdout matches
+Prototype,PSC acceptance range,Single arm,0.8 to 1.2,Outside this range PSC is not fitted for that replicate
+Prototype,PSC after acceptance,Single arm,Refit on all historical controls,Proximity-weighted PSC is then applied to the trial
